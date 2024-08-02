@@ -7,13 +7,37 @@ Created on Sat Jul 27 20:55:06 2024
 
 from PIL import Image, ImageDraw
 import math
+import cv2 as cv
+import numpy as np
+
 
 def ChangeContrast(img, level):
     factor = (259 * (level + 255)) / (255 * (259 - level))
     def Contrast(c):
         return 128 + factor * (c - 128)
-   # im.point(contrast).show()
     return img.point(Contrast)
+
+
+def ExtractBoard(img):
+    img = np.array(img)
+    def DetectLines(img):
+        dst = cv.Canny(img, 50, 200, None, 3)
+        # Copy edges to the images that will display the results in BGR
+       # cdstP = cv.cvtColor(dst, cv.COLOR_GRAY2BGR)
+        linesP = cv.HoughLinesP(dst, 1, np.pi / 180, 50, None, 50, 10)
+        return linesP
+    lines_detected = DetectLines(img)
+    x,y=[],[]
+    for i in range(0,len(lines_detected)):
+        x.append(lines_detected[i][0][0])
+        x.append(lines_detected[i][0][2])
+        y.append(lines_detected[i][0][1])
+        y.append(lines_detected[i][0][3])
+    x.sort(), y.sort()
+    omited = 0
+    left, right, top, bottom = x[omited], x[0-omited-1], y[omited], y[0-omited-1]
+    return image.crop((left, top, right, bottom))
+
 
 def DrawGrid(image):
     draw = ImageDraw.Draw(image)
@@ -31,62 +55,38 @@ def DrawGrid(image):
     del draw
     return image
 
-def Crop(image):
-    left = 0
-    top = 7*int(image.height / 8)
-    right = int(image.width / 8)
-    bottom = 8*int(image.height / 8)
-    # Cropped image of above dimension
-    # (It will not change original image)
-    im1 = image.crop((left, top, right, bottom))
-    return im1
 
-def SquareCoordinates(square):
-    def SquareNumber(square_name):
-        def LetterNumber(letter):
-            return ord(letter.lower())-96
-        return LetterNumber(square_name[0]) + (int(square_name[1])-1)*8
-    def SquareCoordinates(square_number):
-        column = square_number % 8
-        if column == 0: column = 8
-        row = math.ceil(square_number/8)
-        return column, row
-    square_number = SquareNumber(square)
-    square_coordinates = SquareCoordinates(square_number)
-
-    return square_coordinates
-
-def ExtractSquare(image, square):
+def ExtractSquare(img_board, square):
+    def SquareCoordinates(square):
+        def SquareNumber(square_name):
+            def LetterNumber(letter):
+                return ord(letter.lower())-96
+            return LetterNumber(square_name[0]) + (int(square_name[1])-1)*8
+        def SquareCoordinates(square_number):
+            column = square_number % 8
+            if column == 0: column = 8
+            row = math.ceil(square_number/8)
+            return column, row
+        square_number = SquareNumber(square)
+        square_coordinates = SquareCoordinates(square_number)
+        return square_coordinates
     col, row = SquareCoordinates(square)
-    square_width = int(image.width/8)
-    square_height = int(image.height/8)
+    square_width = int(img_board.width/8)
+    square_height = int(img_board.height/8)
     left = (col-1) * square_width
     right = left + square_width
     top = (8-row) * square_height
     bottom = top + square_height
-    square_image = image.crop((left, top, right, bottom))
+    square_image = img_board.crop((left, top, right, bottom))
     return square_image
 
 
 image = Image.open('C:\\Users\\t-jan\\Desktop\\PositionRecognition\\Screenshot_19.jpg').convert('L')
-#image.show()
-a = ChangeContrast(image, 100)
-#a.show()
-b = DrawGrid(a)
-b.show()
 
-d = ExtractSquare(b, 'c2')
-d.show()
+board = ExtractBoard(image)
+board.show()
 
-"""
-def change_contrast_multi(img, steps):
-    width, height = img.size
-    canvas = Image.new('RGB', (width * len(steps), height))
-    for n, level in enumerate(steps):
-        img_filtered = ChangeContrast(img, level)
-        canvas.paste(img_filtered, (width * n, 0))
-    return canvas
-
-change_contrast_multi(im, [50, 75, 100])
-"""
+square = ExtractSquare(board, 'e5')
+# square = ChangeContrast(square, 100)
+square.show()
 
