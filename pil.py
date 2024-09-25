@@ -83,13 +83,15 @@ def ExtractSquare(img_board, square):
     return square_image
 
 
-image = Image.open('C:\\Users\\t-jan\\Desktop\\PositionRecognition\\Screenshot_19.jpg').convert('L')
+for b in range(1,21):
+    pth = "C:\\Users\\t-jan\\Desktop\\PositionRecognition\\training-data\\boards\\Screenshot_"+str(b)+".jpg"
+    image = Image.open(pth).convert('L')
+    board = ExtractBoard(image)
+#board.show()
+    for s in range(1,65):
+        square = ExtractSquare(board, s)
+        path = "C:\\Users\\t-jan\\Desktop\\PositionRecognition\\training-data\\squares\\" + str(s+64*(b-1)) + ".jpg"
+        square.save(path)
 
-board = ExtractBoard(image)
-board.show()
-
-square = ExtractSquare(board, 1)
 # square = ChangeContrast(square, 100)
-square.show(title = "Square")
-
-
+#square.show(title = "Square")
