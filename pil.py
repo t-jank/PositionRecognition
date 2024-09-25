@@ -61,11 +61,11 @@ def ExtractSquare(img_board, square):
         def SquareNumber(square_name):
             def LetterNumber(letter):
                 return ord(letter.lower())-96
-            return LetterNumber(square_name[0]) + (int(square_name[1])-1)*8
+            return LetterNumber(square_name[0]) + (8-int(square_name[1]))*8
         def SquareCoordinates(square_number):
             column = square_number % 8
             if column == 0: column = 8
-            row = math.ceil(square_number/8)
+            row = 9-math.ceil(square_number/8)
             return column, row
         square_number = SquareNumber(square)
         square_coordinates = SquareCoordinates(square_number)
@@ -86,7 +86,9 @@ image = Image.open('C:\\Users\\t-jan\\Desktop\\PositionRecognition\\Screenshot_1
 board = ExtractBoard(image)
 board.show()
 
-square = ExtractSquare(board, 'e5')
+square = ExtractSquare(board, 'b2')
 # square = ChangeContrast(square, 100)
-square.show()
+square.show(title = "Square")
+
+
 
