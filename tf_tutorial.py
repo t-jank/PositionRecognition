@@ -32,6 +32,7 @@ val_loss, val_acc = model.evaluate(x_test, y_test)
 print(val_loss, val_acc)
 
 #model.save('epic_num_reader.model.keras')
+
 #new_model = tf.keras.models.load_model('epic_num_reader.model.keras')
 
 

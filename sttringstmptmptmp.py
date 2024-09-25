@@ -10,7 +10,7 @@ path = "C:\\Users\\t-jan\\Desktop\\PositionRecognition\\training-data\\boards\\f
 with open(path, "r") as txt:
     lines = txt.readlines()
 
-print(lines[0][1279])
+print(lines[0][0])
 
 '''
 for i in range(0,40,2):
