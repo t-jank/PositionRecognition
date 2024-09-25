@@ -67,7 +67,9 @@ def ExtractSquare(img_board, square):
             if column == 0: column = 8
             row = 9-math.ceil(square_number/8)
             return column, row
-        square_number = SquareNumber(square)
+        if isinstance(square, str): square_number = SquareNumber(square)
+        elif isinstance(square, int): square_number = square
+        else: print("Unknown type of square")
         square_coordinates = SquareCoordinates(square_number)
         return square_coordinates
     col, row = SquareCoordinates(square)
@@ -86,9 +88,8 @@ image = Image.open('C:\\Users\\t-jan\\Desktop\\PositionRecognition\\Screenshot_1
 board = ExtractBoard(image)
 board.show()
 
-square = ExtractSquare(board, 'b2')
+square = ExtractSquare(board, 1)
 # square = ChangeContrast(square, 100)
 square.show(title = "Square")
-
 
 
