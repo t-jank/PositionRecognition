@@ -19,7 +19,7 @@ with open(fen_path, "r") as txt:
 for i in range(1,1281):
     squares_path = "C:\\Users\\t-jan\\Desktop\\PositionRecognition\\training-data\\squares\\" + str(i) + ".jpg"
     x_train.append(imread(squares_path))
-    y_train.append(longfen[0][i-1])
+    y_train.append(np.uint8(longfen[0][i-1]))
 
 
 

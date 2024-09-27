@@ -16,7 +16,9 @@ mnist = tf.keras.datasets.mnist
 x_train = tf.keras.utils.normalize(x_train, axis=1)
 x_test = tf.keras.utils.normalize(x_test, axis=1)
 
+print(type(y_train[10]))
 
+"""
 model = tf.keras.models.Sequential()
 model.add(tf.keras.layers.Flatten())
 model.add(tf.keras.layers.Dense(128, activation=tf.nn.relu))
@@ -47,3 +49,4 @@ for i in range(0,10000):
         #plt.imshow(x_test[0], cmap = plt.cm.binary)
 #plt.show()
 print(j)
+"""

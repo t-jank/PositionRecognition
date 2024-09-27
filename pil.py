@@ -82,16 +82,17 @@ def ExtractSquare(img_board, square):
     square_image = img_board.crop((left, top, right, bottom))
     return square_image
 
-
-for b in range(1,21):
-    pth = "C:\\Users\\t-jan\\Desktop\\PositionRecognition\\training-data\\boards\\Screenshot_"+str(b)+".jpg"
-    image = Image.open(pth).convert('L')
-    board = ExtractBoard(image)
-#board.show()
-    for s in range(1,65):
-        square = ExtractSquare(board, s)
-        path = "C:\\Users\\t-jan\\Desktop\\PositionRecognition\\training-data\\squares\\" + str(s+64*(b-1)) + ".jpg"
-        square.save(path)
+def SaveExtractedSquares():
+    for b in range(1,11):
+        pth = "C:\\Users\\t-jan\\Desktop\\PositionRecognition\\training-data\\boards2\\Screenshot_"+str(b)+".jpg"
+        image = Image.open(pth).convert('L')
+        board = ExtractBoard(image)
+    #board.show()
+        for s in range(1,65):
+            square = ExtractSquare(board, s)
+            # przed użyciem sprawdzić numerację
+            path = "C:\\Users\\t-jan\\Desktop\\PositionRecognition\\training-data\\squares\\" + str(1280+s+64*(b-1)) + ".jpg" # przed użyciem sprawdzić numerację
+            # square.save(path) # przed użyciem sprawdzić numerację
 
 # square = ChangeContrast(square, 100)
 #square.show(title = "Square")
